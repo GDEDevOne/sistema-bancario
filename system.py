@@ -28,36 +28,36 @@ def obter_opcao_usuario():
         except ValueError:
             print("Entrada inválida. Por favor, insira um número.")
 
-def executar_opcao(opcao):
+def executar_opcao(opcao, banco):
     """Executa a ação correspondente à opção escolhida pelo usuário."""
 
+    operacao = operacoes.ContaBancaria(banco)
+
     if opcao == 1:
-        nome = input("Nome do titular: ")
-        contas.cadastrar_conta(nome)
+        banco.cadastrar_conta()
 
     elif opcao == 2:
-        nome = input("Nome do titular: ")
-        contas.acessar_conta(nome)
+        banco.acessar_conta()
 
     elif opcao == 3:
         try:
             valor = float(input("Valor do depósito: "))
-            operacoes.realizar_deposito(valor)
+            operacao.realizar_deposito(valor)
         except ValueError:
             print("Valor inválido. Tente novamente.")
 
     elif opcao == 4:
         try:
             valor = float(input("Valor do saque: "))
-            operacoes.realizar_saque(valor)
+            operacao.realizar_saque(valor)
         except ValueError:
             print("Valor inválido. Tente novamente.")
 
     elif opcao == 5:
-        operacoes.exibir_extrato()
+        operacao.exibir_extrato()
 
     elif opcao == 6:
-        contas.sair_conta()
+        banco.sair_conta()
 
     elif opcao == 7:
         print("Encerrando o sistema...")
@@ -67,9 +67,10 @@ def executar_opcao(opcao):
 
 def run():
     """Função principal para execução do sistema bancário."""
+    banco = contas.Banco()
     
     while True:
         exibir_menu()
         opcao = obter_opcao_usuario()
-        if not executar_opcao(opcao):
+        if not executar_opcao(opcao, banco):
             break
